@@ -8,7 +8,27 @@ st.title('Movie Recommender System')
 movies=pickle.load(open('movies_dict.pkl','rb'))
 movies=pd.DataFrame(movies)
 
-similarity=pickle.load(open('similarity.pkl','rb'))
+
+# def load_model_from_url():
+#     response = requests.get(MODEL_URL, stream=True)
+    
+    
+#         # Load the model into memory directly
+#     model = pickle.load(response.raw)
+#     return model
+
+url = "https://movierecommenderr.s3.ap-south-1.amazonaws.com/similarity.pkl"
+response = requests.get(url)
+with open("similarity.pkl", "wb") as f:
+    f.write(response.content)
+
+# Load the model
+with open("similarity.pkl", "rb") as f:
+    similarity = pickle.load(f)
+    
+
+
+
 
 def fetch_poster(movie_id):
     response=requests.get('https://api.themoviedb.org/3/movie/{}?api_key=25f62ea5a759dfa05a798f44c0fba61a&language=en-US'.format(movie_id))
